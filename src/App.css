@@ -20,11 +20,29 @@ html, body {
 
 .playground-container {
   height: 75vh;
-  width:150vh;
+  width: 100vh;
   background-color: white;
   
 }
+.playground-controls {
+  text-align: center;
+}
 
+
+.array-content {
+  position: absolute;
+  width: 100%;
+
+}
+
+
+.array-value {
+  width: 2px;
+  background-color:pink;
+  display: inline-block;
+  margin: 1 0px;
+  
+}
 
 
 
