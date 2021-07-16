@@ -5,6 +5,8 @@
 - [x] Generate new Array functionality
 - [ ] Array Visualizer
 - [ ] Implement Sorting Algorithms 
+- [ ] Add Algorithm Test Cases
+
 
 
 

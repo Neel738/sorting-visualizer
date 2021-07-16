@@ -8,7 +8,7 @@ const Visualizer = () => {
   const generateArray = () => {
     let new_array = [];
 
-    for (let i = 0; i < 150; i++) {
+    for (let i = 0; i < 100; i++) {
       new_array.push(getRandomNumberBetween(1, 400));
     }
 
@@ -17,33 +17,46 @@ const Visualizer = () => {
 
   const doSort = () => {
     let animations = BubbleSort(array);
-    
+    console.log(animations)
+
+    let bars = document.getElementsByClassName("array-value");
+    for (var i = 0; i < animations.length; i++) {
+      let pair = animations[i];
+      
+      let first = bars[pair[0]];
+      let second = bars[pair[1]];
+
+      setTimeout(() => {
+        
+        let temp = first.style.height;
+        first.style.height = second.style.height;
+        second.style.height = temp;
+        
+      }, i)
     
 
-    for (let i = 0; i < animations.length; i++) {
-      
      
 
-     
-
-        let next_switch = animations[i];
-        console.log(`switching ${next_switch[0]} and ${next_switch[1]}`)
-        let bars = document.getElementsByClassName('array-value');
-
-
-        setTimeout(() => {
-        const [barOneIdx, height] = animations[i];
-          const barOneStyle = bars[barOneIdx].style;
-          barOneStyle.height = `${height}px`;
-
-      }, i * 10)
-      
     }
-    
+    // for (let i = 0; i < animations.length; i++) {
+    //   let next_switch = animations[i];
+    //   console.log(`switching ${next_switch[0]} and ${next_switch[1]}`);
+    //   let bars = document.getElementsByClassName("array-value");
+
+    //   setTimeout(() => {
+    //     const [barOneIdx, barTwoIdx] = animations[i];
+    //     const barOneStyle = bars[barOneIdx].style;
+    //     const barTwoStyle = bars[barTwoIdx].style;
+    //     let  temp = barOneStyle.height;
+
+    //     barOneStyle.height = `${barTwoStyle.height}px`;
+    //     barTwoStyle.height = `${temp}px`;
+
+    //   }, i * 10);
+    // }
   };
 
   function swap(i, j) {
-    
     let new_array = array;
 
     let temp = new_array[i];
@@ -56,25 +69,23 @@ const Visualizer = () => {
   useEffect(generateArray, []);
 
   return (
-    <div className="container visualizer-container">
-      <center>
+    <div>
+   
         {currentSwap}
         <div className="playground-controls">
           <button onClick={generateArray}>Generate New Array</button>
           <button onClick={doSort}>Sort</button>
         </div>
-        <center>
-          <div className="array-container">
-            {array.map((val, indx) => (
-              <div
-                className={"array-value"}
-                key={indx}
-                style={{ height: `${val}px` }}
-              ></div>
-            ))}
-          </div>
-        </center>
-      </center>
+        <div className="array-container">
+          {array.map((val, indx) => (
+            <div
+              className={"array-value"}
+              key={indx}
+              style={{ height: `${val}px` }}
+            ></div>
+          ))}
+        </div>
+    
     </div>
   );
 };
