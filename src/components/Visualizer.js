@@ -13,6 +13,8 @@ const Visualizer = () => {
     setArray(new_array)
   };
 
+  useEffect(generateArray, []);
+
   return (
     <div className="container visualizer-container">
 
