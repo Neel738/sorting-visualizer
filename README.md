@@ -1,7 +1,7 @@
 # Sorting Visualizer
 
 ## Todo
-- [ ] Playground Area
+- [x] Playground Area
 - [ ] Generate new Array functionality
 - [ ] Array Visualizer
 - [ ] Implement Sorting Algorithms 
