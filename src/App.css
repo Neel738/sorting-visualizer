@@ -1,51 +1,45 @@
-html, body {
-  margin: 0 0;
-  background-color: plum;
+* {
+  padding: 0;
+  margin: 0;
+}
 
+
+body, html, #root, .container {
   height: 100%;
-
 }
-#container-title {
+
+h1 {
   text-align: center;
-}
-.container {
-  height: 100vh;
-  background-color: plum;
-  position: relative;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin-top: 40px;
 }
 
-.playground-container {
-  height: 75vh;
-  width: 100vh;
-  background-color: white;
+.visualizer-container {
+  width: 50%;
+  height: 70%;
+  margin: 0 auto;
+  margin-top: 50px;
+
+
+  border-radius: 15px;
+  
+
   
 }
-.playground-controls {
-  text-align: center;
-}
-
-
-.array-content {
-  position: absolute;
-  width: 100%;
-
+.array-container {
+  margin-top: 100px;
+  
 }
 
 
 .array-value {
+  
   width: 2px;
-  background-color:pink;
   display: inline-block;
-  margin: 1 0px;
+  background-color: lightseagreen;
+  margin-right: 2px;
+
+
+
+  
   
 }
-
-
-
-
-
-
