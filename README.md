@@ -2,7 +2,7 @@
 
 ## Todo
 - [x] Playground Area
-- [ ] Generate new Array functionality
+- [x] Generate new Array functionality
 - [ ] Array Visualizer
 - [ ] Implement Sorting Algorithms 
 
