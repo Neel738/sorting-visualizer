@@ -36,10 +36,9 @@ h1 {
 
 .array-value {
   
-  width: 2px;
   display: inline-block;
   background-color: lightseagreen;
-  margin-right: 2px;
+  margin-right: 1px;
 
 }
 

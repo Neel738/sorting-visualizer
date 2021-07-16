@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import BubbleSort from "../algorithms/BubbleSort";
 const Visualizer = () => {
   const [array, setArray] = useState([]);
-  const [currentSwap, setCurrentSwap] = useState([]);
-  const [counter, setCounter] = useState(0);
+  const DELAY = 1;
+  const BARS = 100;
+  const WIDTH = 2 ;
 
   const generateArray = () => {
+    setArray([]);
     let new_array = [];
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < BARS; i++) {
       new_array.push(getRandomNumberBetween(1, 400));
     }
 
@@ -17,88 +19,74 @@ const Visualizer = () => {
 
   const doSort = () => {
     let animations = BubbleSort(array);
-    console.log(animations)
+
 
     let bars = document.getElementsByClassName("array-value");
     for (var i = 0; i < animations.length; i++) {
-      
       let animation = animations[i];
-      
-  
-        setTimeout(() => {
-          if (animation["type"] == "swap") {
 
-            let pair = animation['payload'];
-            let first = bars[pair[0]];
-            let second = bars[pair[1]];
+      setTimeout(() => {
+        if (animation["type"] === "swap") {
+        
+
+          let pair = animation["payload"];
+          let first = bars[pair[0]];
+          let second = bars[pair[1]];
+          
+         
 
           let temp = first.style.height;
           first.style.height = second.style.height;
           second.style.height = temp;
-          }
-          else if (animation["type"] == "done") {
-            console.log(bars)
-            console.log(animation['payload'])
-            let target_bar_to_be_done =  bars[animation["payload"]]
-            target_bar_to_be_done.classList.add('purple');
-          }
-          
-        }, i)
-       
-       
-    
 
-     
 
+          first.classList = ["array-value"]
+          second.classList =  ["array-value"]
+         
+
+        }
+        else if (animation["type"] === "comparing") {
+          let pair = animation["payload"];
+          let first = bars[pair[0]];
+          let second = bars[pair[1]];
+          first.classList.add("green");
+          second.classList.add("green");
+        } else if (animation["type"] === "done") {
+          let target_bar_to_be_done = bars[animation["payload"]];
+          target_bar_to_be_done.classList.add("purple");
+        } else if (animation["type"] === "no-swap") {
+          let pair = animation["payload"];
+          let first = bars[pair[0]];
+          let second = bars[pair[1]];
+          first.classList = ["array-value"]
+          second.classList =  ["array-value"]
+        }
+      }, i * DELAY);
     }
-    // for (let i = 0; i < animations.length; i++) {
-    //   let next_switch = animations[i];
-    //   console.log(`switching ${next_switch[0]} and ${next_switch[1]}`);
-    //   let bars = document.getElementsByClassName("array-value");
 
-    //   setTimeout(() => {
-    //     const [barOneIdx, barTwoIdx] = animations[i];
-    //     const barOneStyle = bars[barOneIdx].style;
-    //     const barTwoStyle = bars[barTwoIdx].style;
-    //     let  temp = barOneStyle.height;
-
-    //     barOneStyle.height = `${barTwoStyle.height}px`;
-    //     barTwoStyle.height = `${temp}px`;
-
-    //   }, i * 10);
-    // }
   };
 
-  function swap(i, j) {
-    let new_array = array;
+  
 
-    let temp = new_array[i];
-    new_array[i] = new_array[j];
-    new_array[j] = temp;
-
-    setArray(new_array);
-  }
-
+  //This ensures an array is generated on page load;
   useEffect(generateArray, []);
 
   return (
     <div>
-   
-        {currentSwap}
-        <div className="playground-controls">
-          <button onClick={generateArray}>Generate New Array</button>
-          <button onClick={doSort}>Sort</button>
-        </div>
-        <div className="array-container">
-          {array.map((val, indx) => (
-            <div
-              className={"array-value"}
-              key={indx}
-              style={{ height: `${val}px` }}
-            ></div>
-          ))}
-        </div>
-    
+      
+      <div className="playground-controls">
+        <button onClick={generateArray}>Generate New Array</button>
+        <button onClick={doSort}>Sort</button>
+      </div>
+      <div className="array-container">
+        {array.map((val, indx) => (
+          <div
+            className={["array-value"]}
+            key={indx}
+            style={{ height: `${val}px `, width: `${WIDTH}px`}}
+          ></div>
+        ))}
+      </div>
     </div>
   );
 };
