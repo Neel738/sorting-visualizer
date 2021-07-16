@@ -1,13 +1,13 @@
 import logo from "./logo.svg";
 import "./App.css";
-import Playground from "./components/Playground";
+import Visualizer from "./components/Visualizer";
 
 function App() {
   return (
     <div className="container">
       
       <h1 id='container-title'>Sorting Visualizer</h1>
-        <Playground/>
+        <Visualizer/>
   
     </div>
   );
