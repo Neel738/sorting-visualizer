@@ -6,7 +6,7 @@ const Visualizer = () => {
   const generateArray = () => {
     let new_array = [];
 
-    for (let i = 0 ; i < 200; i++) {
+    for (let i = 0 ; i < 150; i++) {
         new_array.push(getRandomNumberBetween(1, 400 ));
     }
    
@@ -26,7 +26,8 @@ const Visualizer = () => {
         <button>Sort</button>
       
     </div>
-      <div className="array-container">
+    <center>
+    <div className="array-container">
         {array.map((val, indx) => (
           <div
             className={"array-value"}
@@ -35,6 +36,8 @@ const Visualizer = () => {
           ></div>
         ))}
       </div>
+    </center>
+     
       
       </center>
     </div>
