@@ -21,18 +21,31 @@ const Visualizer = () => {
 
     let bars = document.getElementsByClassName("array-value");
     for (var i = 0; i < animations.length; i++) {
-      let pair = animations[i];
       
-      let first = bars[pair[0]];
-      let second = bars[pair[1]];
+      let animation = animations[i];
+      
+  
+        setTimeout(() => {
+          if (animation["type"] == "swap") {
 
-      setTimeout(() => {
-        
-        let temp = first.style.height;
-        first.style.height = second.style.height;
-        second.style.height = temp;
-        
-      }, i)
+            let pair = animation['payload'];
+            let first = bars[pair[0]];
+            let second = bars[pair[1]];
+
+          let temp = first.style.height;
+          first.style.height = second.style.height;
+          second.style.height = temp;
+          }
+          else if (animation["type"] == "done") {
+            console.log(bars)
+            console.log(animation['payload'])
+            let target_bar_to_be_done =  bars[animation["payload"]]
+            target_bar_to_be_done.classList.add('purple');
+          }
+          
+        }, i)
+       
+       
     
 
      
