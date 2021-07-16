@@ -4,9 +4,13 @@ function BubbleSort(array) {
 
       for (let i  =0; i < array.length; i++) {
           for (let j=0; j < (array.length - i - 1); j++) {
+            animations.push({"type" : "comparing", "payload": [j, j+1]})
               if (array[j] > array[j+1]) {
                   array = swap(array, j, j+1);
+                  animations.push({"type" : "need-swap", "payload": [j, j+1]})
                   animations.push({"type" : "swap", "payload": [j, j+1]})
+              } else {
+                animations.push({"type" : "no-swap", "payload": [j, j+1]})
               }
           }
           animations.push({"type" : "done", "payload": array.length-i-1})
