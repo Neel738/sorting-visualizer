@@ -30,6 +30,8 @@ h1 {
   margin: 0 auto;
   position: absolute;
   bottom: 0px;
+  width: 100%;
+  overflow-wrap:initial;
   
 }
 
@@ -44,14 +46,3 @@ h1 {
 
 
 
-.red {
-  background-color: red;
-}
-
-.green {
-  background-color: lime;
-}
-
-.purple {
-  background: palevioletred;
-}
