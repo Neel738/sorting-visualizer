@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
+import styles from "../styling";
+
 import BubbleSort from "../algorithms/BubbleSort";
 const Visualizer = () => {
   const [array, setArray] = useState([]);
-  const DELAY = 1;
-  const BARS = 100;
-  const WIDTH = 2 ;
-
+  const DELAY = 100;
+  const BARS = 5;
+  const WIDTH = BARS < 20 ? 44 : 2;
+  
+  const resetBars = () => {
+    let bars = document.getElementsByClassName("array-value");
+    for (var i = 0; i < bars.length; i++) {
+      bars[i].style.backgroundColor = styles['DEFAULT_COLOR']
+    }
+  }
   const generateArray = () => {
+    resetBars();
     setArray([]);
     let new_array = [];
 
@@ -18,64 +27,94 @@ const Visualizer = () => {
   };
 
   const doSort = () => {
+    document.getElementById('generateArray').disabled = true;
+   
     let animations = BubbleSort(array);
-
-
+    document.getElementById('generateArray').disabled = true;
     let bars = document.getElementsByClassName("array-value");
     for (var i = 0; i < animations.length; i++) {
+      
       let animation = animations[i];
+      let color = null;
+
+      switch (animation["type"]) {
+        case "swap":
+          color = styles["SWAPPING"];
+          break;
+
+        case "comparing":
+          color = styles["CURRENT"];
+          break;
+
+        case "done":
+          color = styles["DONE"];
+          break;
+
+        default:
+          color = styles["DEFAULT_COLOR"];
+          break;
+      }
+
+      let pair = animation["payload"];
+      
+      let first = bars[pair[0]];
+      let second = pair[1] != null ? bars[pair[1]] : null;
+
+
+      // let previous = pair[0] > 0 ? bars[pair[0]-1] : bars[0];
 
       setTimeout(() => {
-        if (animation["type"] === "swap") {
+       
+       
+
         
 
-          let pair = animation["payload"];
-          let first = bars[pair[0]];
-          let second = bars[pair[1]];
+        switch (animation["type"]) {
+          case "swap":
+            let temp = first.style.height;
+            first.style.height = second.style.height;
+            second.style.height = temp;
+            
+            break;
+         
+         
+            
           
-         
-
-          let temp = first.style.height;
-          first.style.height = second.style.height;
-          second.style.height = temp;
-
-
-          first.classList = ["array-value"]
-          second.classList =  ["array-value"]
-         
-
+          
         }
-        else if (animation["type"] === "comparing") {
-          let pair = animation["payload"];
-          let first = bars[pair[0]];
-          let second = bars[pair[1]];
-          first.classList.add("green");
-          second.classList.add("green");
-        } else if (animation["type"] === "done") {
-          let target_bar_to_be_done = bars[animation["payload"]];
-          target_bar_to_be_done.classList.add("purple");
-        } else if (animation["type"] === "no-swap") {
-          let pair = animation["payload"];
-          let first = bars[pair[0]];
-          let second = bars[pair[1]];
-          first.classList = ["array-value"]
-          second.classList =  ["array-value"]
-        }
+      
+
+        first.style.backgroundColor = color;
+        second.style.backgroundColor = color;
+
+
+       
+       
       }, i * DELAY);
+
+
+      
+
+
+
+      setTimeout( () => {
+        document.getElementById('generateArray').disabled = false;
+        
+      }, (animations.length +1) * DELAY)
+
+        
     }
 
+    
   };
-
-  
 
   //This ensures an array is generated on page load;
   useEffect(generateArray, []);
 
   return (
     <div>
-      
       <div className="playground-controls">
-        <button onClick={generateArray}>Generate New Array</button>
+        <button id='generateArray' onClick={generateArray}>Generate New Array</button>
         <button onClick={doSort}>Sort</button>
       </div>
       <div className="array-container">
@@ -84,7 +123,9 @@ const Visualizer = () => {
             className={["array-value"]}
             key={indx}
             style={{ height: `${val}px `, width: `${WIDTH}px`}}
-          ></div>
+          >
+            {WIDTH > 45 ? `${indx}, ${val}` : ""}
+          </div>
         ))}
       </div>
     </div>

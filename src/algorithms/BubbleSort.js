@@ -7,13 +7,13 @@ function BubbleSort(array) {
             animations.push({"type" : "comparing", "payload": [j, j+1]})
               if (array[j] > array[j+1]) {
                   array = swap(array, j, j+1);
-                  animations.push({"type" : "need-swap", "payload": [j, j+1]})
                   animations.push({"type" : "swap", "payload": [j, j+1]})
+                  animations.push({"type" : "done-swap", "payload": [j, j+1]})
               } else {
                 animations.push({"type" : "no-swap", "payload": [j, j+1]})
               }
           }
-          animations.push({"type" : "done", "payload": array.length-i-1})
+          animations.push({"type" : "done", "payload": [array.length-i-1, array.length-i-1]})
       }
   
       return animations;
