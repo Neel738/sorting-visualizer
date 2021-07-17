@@ -2,38 +2,81 @@ import React, { useState, useEffect } from "react";
 import styles from "../styling";
 
 import BubbleSort from "../algorithms/BubbleSort";
+
+import MergeSort from "../algorithms/MergeSort";
+
 const Visualizer = () => {
   const [array, setArray] = useState([]);
   const DELAY = 100;
-  const BARS = 5;
+  const BARS = 10;
   const WIDTH = BARS < 20 ? 44 : 2;
-  
+
+
+
+  MergeSort([5, 4 , 3, 2, 1, 0])
+
   const resetBars = () => {
     let bars = document.getElementsByClassName("array-value");
     for (var i = 0; i < bars.length; i++) {
-      bars[i].style.backgroundColor = styles['DEFAULT_COLOR']
+      bars[i].style.backgroundColor = styles["DEFAULT_COLOR"];
     }
-  }
+  };
   const generateArray = () => {
     resetBars();
     setArray([]);
     let new_array = [];
 
     for (let i = 0; i < BARS; i++) {
-      new_array.push(getRandomNumberBetween(1, 400));
+      new_array.push(getRandomNumberBetween(5, 400));
     }
 
     setArray(new_array);
   };
 
-  const doSort = () => {
-    document.getElementById('generateArray').disabled = true;
+  const visualizeMergeSort = () => {
+    //DISABLE NEW ARRAY GENERATION
+    document.getElementById("generateArray").disabled = true;
+    let animations = MergeSort(array);
+    let bars = document.getElementsByClassName('array-value');
+
+    for (var i = 0; i < animations.length; i++) {
+      let animation = animations[i];
+      
+      const isColorChange = i % 3 !== 2;
+      if (isColorChange) {
+        const [barOneIdx, barTwoIdx] = animations[i];
+        const barOneStyle = bars[barOneIdx].style;
+        const barTwoStyle = bars[barTwoIdx].style;
+        const color = i % 3 === 0 ? styles['CURRENT'] : styles['DEFAULT_COLOR'];
+        setTimeout(() => {
+          barOneStyle.backgroundColor = color;
+          barTwoStyle.backgroundColor = color;
+        }, i * DELAY);
+      } else {
+        setTimeout(() => {
+         
+          const [barOneIdx, newHeight] = animation;
+          const barOneStyle = bars[barOneIdx].style;
+          barOneStyle.height = `${newHeight}px`;
+        }, i * DELAY);
+      }
+    }
+
    
+
+    //ENABLE IT AGAIN NEW ARRAY GENERATION
+    setTimeout(() => {
+      document.getElementById("generateArray").disabled = false;
+    }, (animations.length + 1 )* DELAY);
+  };
+
+  const visualizeBubbleSort = (sort_type) => {
+    document.getElementById("generateArray").disabled = true;
     let animations = BubbleSort(array);
-    document.getElementById('generateArray').disabled = true;
+
+    document.getElementById("generateArray").disabled = true;
     let bars = document.getElementsByClassName("array-value");
     for (var i = 0; i < animations.length; i++) {
-      
       let animation = animations[i];
       let color = null;
 
@@ -56,56 +99,30 @@ const Visualizer = () => {
       }
 
       let pair = animation["payload"];
-      
+
       let first = bars[pair[0]];
       let second = pair[1] != null ? bars[pair[1]] : null;
-
 
       // let previous = pair[0] > 0 ? bars[pair[0]-1] : bars[0];
 
       setTimeout(() => {
-       
-       
-
-        
-
         switch (animation["type"]) {
           case "swap":
             let temp = first.style.height;
             first.style.height = second.style.height;
             second.style.height = temp;
-            
+
             break;
-         
-         
-            
-          
-          
         }
-      
 
         first.style.backgroundColor = color;
         second.style.backgroundColor = color;
-
-
-       
-       
       }, i * DELAY);
 
-
-      
-
-
-
-      setTimeout( () => {
-        document.getElementById('generateArray').disabled = false;
-        
-      }, (animations.length +1) * DELAY)
-
-        
+      setTimeout(() => {
+        document.getElementById("generateArray").disabled = false;
+      }, (animations.length + 1) * DELAY);
     }
-
-    
   };
 
   //This ensures an array is generated on page load;
@@ -114,15 +131,18 @@ const Visualizer = () => {
   return (
     <div>
       <div className="playground-controls">
-        <button id='generateArray' onClick={generateArray}>Generate New Array</button>
-        <button onClick={doSort}>Sort</button>
+        <button id="generateArray" onClick={generateArray}>
+          Generate New Array
+        </button>
+        <button onClick={visualizeBubbleSort}>Bubble Sort</button>
+        <button onClick={visualizeMergeSort}>Merge Sort</button>
       </div>
       <div className="array-container">
         {array.map((val, indx) => (
           <div
             className={["array-value"]}
             key={indx}
-            style={{ height: `${val}px `, width: `${WIDTH}px`}}
+            style={{ height: `${val}px `, width: `${WIDTH}px` }}
           >
             {WIDTH > 45 ? `${indx}, ${val}` : ""}
           </div>
