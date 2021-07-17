@@ -7,13 +7,11 @@ import MergeSort from "../algorithms/MergeSort";
 
 const Visualizer = () => {
   const [array, setArray] = useState([]);
-  const DELAY = 100;
+  const DELAY = 1;
   const BARS = 10;
   const WIDTH = BARS < 20 ? 44 : 2;
 
-
-
-  MergeSort([5, 4 , 3, 2, 1, 0])
+  MergeSort([5, 4, 3, 2, 1, 0]);
 
   const resetBars = () => {
     let bars = document.getElementsByClassName("array-value");
@@ -37,37 +35,47 @@ const Visualizer = () => {
     //DISABLE NEW ARRAY GENERATION
     document.getElementById("generateArray").disabled = true;
     let animations = MergeSort(array);
-    let bars = document.getElementsByClassName('array-value');
+    let bars = document.getElementsByClassName("array-value");
 
     for (var i = 0; i < animations.length; i++) {
       let animation = animations[i];
-      
-      const isColorChange = i % 3 !== 2;
-      if (isColorChange) {
-        const [barOneIdx, barTwoIdx] = animations[i];
-        const barOneStyle = bars[barOneIdx].style;
-        const barTwoStyle = bars[barTwoIdx].style;
-        const color = i % 3 === 0 ? styles['CURRENT'] : styles['DEFAULT_COLOR'];
+
+      if (animation["type"] != undefined) {
         setTimeout(() => {
-          barOneStyle.backgroundColor = color;
-          barTwoStyle.backgroundColor = color;
-        }, i * DELAY);
-      } else {
-        setTimeout(() => {
-         
-          const [barOneIdx, newHeight] = animation;
-          const barOneStyle = bars[barOneIdx].style;
-          barOneStyle.height = `${newHeight}px`;
+          const [args1, args2] = animation["payload"];
+          switch (animation["type"]) {
+            case "comparing":
+              bars[args1].style.backgroundColor = styles["CURRENT"];
+              bars[args2].style.backgroundColor = styles["CURRENT"];
+              break;
+            case "done_comparing":
+              bars[args1].style.backgroundColor = styles["DEFAULT_COLOR"];
+              bars[args2].style.backgroundColor = styles["DEFAULT_COLOR"];
+              break;
+
+            case "update_height":
+             
+              const barOneStyle = bars[args1].style;
+              barOneStyle.height = `${args2}px`;
+              break;
+
+
+            default:
+              bars[args1] = styles["DEFAULT_COLOR"];
+              bars[args2] = styles["DEFAULT_COLOR"];
+              break;
+              
+          }
         }, i * DELAY);
       }
-    }
 
    
+    }
 
     //ENABLE IT AGAIN NEW ARRAY GENERATION
     setTimeout(() => {
       document.getElementById("generateArray").disabled = false;
-    }, (animations.length + 1 )* DELAY);
+    }, (animations.length + 1) * DELAY);
   };
 
   const visualizeBubbleSort = (sort_type) => {

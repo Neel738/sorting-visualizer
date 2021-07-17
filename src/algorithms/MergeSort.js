@@ -34,13 +34,22 @@ function Merge(array, aux, l, middle, r, animations) {
   while (i <= middle && j <= r) {
     animations.push([i, j]);
 
+    animations.push({"type" : "comparing", "payload": [i, j]})
+    animations.push({"type" : "done_comparing", "payload": [i, j]})
+    
+
     animations.push([i, j]);
 
     if (aux[i] <= aux[j]) {
       animations.push([k, aux[i]]);
+
+    animations.push({"type" : "update_height", "payload": [k, aux[i]]})
+   
       array[k++] = aux[i++];
     } else {
       animations.push([k, aux[j]]);
+      animations.push({"type" : "update_height", "payload": [k, aux[j]]})
+
       array[k++] = aux[j++];
     }
   }
@@ -50,6 +59,8 @@ function Merge(array, aux, l, middle, r, animations) {
     // time to revert their color.
     animations.push([i, i]);
     animations.push([k, aux[i]]);
+    animations.push({"type" : "update_height", "payload": [k, aux[i]]})
+
 
     array[k++] = aux[i++];
   }
@@ -61,6 +72,9 @@ function Merge(array, aux, l, middle, r, animations) {
     // We overwrite the value at index k in the original array with the
     // value at index j in the auxiliary array.
     animations.push([k, aux[j]]);
+
+    animations.push({"type" : "update_height", "payload": [k, aux[j]]})
+
 
     array[k++] = aux[j++];
   }
