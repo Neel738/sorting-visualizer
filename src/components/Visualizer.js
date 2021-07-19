@@ -8,10 +8,10 @@ import MergeSort from "../algorithms/MergeSort";
 const Visualizer = () => {
   const [array, setArray] = useState([]);
   const DELAY = 1;
-  const BARS = 10;
+  const BARS = 100;
   const WIDTH = BARS < 20 ? 44 : 2;
 
-  MergeSort([5, 4, 3, 2, 1, 0]);
+
 
   const resetBars = () => {
     let bars = document.getElementsByClassName("array-value");
@@ -42,32 +42,62 @@ const Visualizer = () => {
 
       if (animation["type"] != undefined) {
         setTimeout(() => {
-          const [args1, args2] = animation["payload"];
+          const [args1, args2, args3] = animation["payload"];
           switch (animation["type"]) {
             case "comparing":
               bars[args1].style.backgroundColor = styles["CURRENT"];
               bars[args2].style.backgroundColor = styles["CURRENT"];
+             
               break;
             case "done_comparing":
               bars[args1].style.backgroundColor = styles["DEFAULT_COLOR"];
               bars[args2].style.backgroundColor = styles["DEFAULT_COLOR"];
+             
+              break;
+
+            case "final" :
+              bars[args1].style.backgroundColor = styles["DONE"];
               break;
 
             case "update_height":
              
               const barOneStyle = bars[args1].style;
+              // const barTwoStyle = bars[args2].style;
+            
               barOneStyle.height = `${args2}px`;
-              break;
 
-
-            default:
-              bars[args1] = styles["DEFAULT_COLOR"];
-              bars[args2] = styles["DEFAULT_COLOR"];
+              
+              // let temp = barOneStyle.height;
+              // barOneStyle.height = barTwoStyle.height;
+              // barTwoStyle.height = temp;
               break;
+            
+            
+
+          
               
           }
         }, i * DELAY);
+        
       }
+
+      // const isColorChange = i % 3 !== 2;
+      // if (isColorChange) {
+      //   const [barOneIdx, barTwoIdx] = animations[i];
+      //   const barOneStyle = bars[barOneIdx].style;
+      //   const barTwoStyle = bars[barTwoIdx].style;
+      //   const color = i % 3 === 0 ? styles['CURRENT'] : styles['DEFAULT_COLOR'];
+      //   setTimeout(() => {
+      //     barOneStyle.backgroundColor = color;
+      //     barTwoStyle.backgroundColor = color;
+      //   }, i * DELAY);
+      // } else {
+      //   setTimeout(() => {
+      //     const [barOneIdx, newHeight] = animations[i];
+      //     const barOneStyle = bars[barOneIdx].style;
+      //     barOneStyle.height = `${newHeight}px`;
+      //   }, i * DELAY);
+      // }
 
    
     }

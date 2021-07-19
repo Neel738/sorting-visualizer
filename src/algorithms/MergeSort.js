@@ -4,7 +4,7 @@ function MergeSort(array, want_array = false) {
   if (array.length <= 1) return array;
   let animations = [];
   const aux = array.slice();
-  MergeSortUtil(array, aux, 0, array.length - 1, animations);
+  MergeSortUtil(array, aux, 0, array.length - 1, animations, 1);
   // console.log(`final array: ${array}`)
   if (want_array) {
     return array;
@@ -13,7 +13,7 @@ function MergeSort(array, want_array = false) {
   }
 }
 
-function MergeSortUtil(array, aux, l, r, animations) {
+function MergeSortUtil(array, aux, l, r, animations, counter) {
   if (r === l) {
     // console.log(`${array[r]}`)
     return array;
@@ -23,14 +23,30 @@ function MergeSortUtil(array, aux, l, r, animations) {
   MergeSortUtil(aux, array, l, middle, animations);
   //   console.log(`Slicing ${array[middle+1]} to ${array[r]}`)
   MergeSortUtil(aux, array, middle + 1, r, animations);
-  Merge(array, aux, l, middle, r, animations);
+  let isFinal = false;
+  if (l ===0 && r === array.length-1) {isFinal = true; }
+  Merge(array, aux, l, middle, r, animations, isFinal);
+
+  
 }
 
-function Merge(array, aux, l, middle, r, animations) {
+
+
+
+
+function Merge(array, aux, l, middle, r, animations, isFinal=false) {
   // console.log(`Merging ${array[l]} to ${array[middle]} to ${array[r]}`)
   let k = l;
   let i = l;
   let j = middle + 1;
+
+
+
+  
+
+  
+
+  
   while (i <= middle && j <= r) {
     animations.push([i, j]);
 
@@ -38,20 +54,42 @@ function Merge(array, aux, l, middle, r, animations) {
     animations.push({"type" : "done_comparing", "payload": [i, j]})
     
 
+    
+    
+
     animations.push([i, j]);
+
+
+
+    if (isFinal) {
+      animations.push({"type" : "final", "payload": [i]})
+      animations.push({"type" : "final", "payload": [k]})
+    }
 
     if (aux[i] <= aux[j]) {
       animations.push([k, aux[i]]);
 
     animations.push({"type" : "update_height", "payload": [k, aux[i]]})
+    
+    array[k++] = aux[i++];
    
-      array[k++] = aux[i++];
     } else {
       animations.push([k, aux[j]]);
-      animations.push({"type" : "update_height", "payload": [k, aux[j]]})
+      animations.push({"type" : "update_height", "payload": [k, aux[j] ]})
+
+      
+    
 
       array[k++] = aux[j++];
+      
     }
+
+
+
+
+
+    
+
   }
   while (i <= middle) {
     animations.push([i, i]);
@@ -60,9 +98,22 @@ function Merge(array, aux, l, middle, r, animations) {
     animations.push([i, i]);
     animations.push([k, aux[i]]);
     animations.push({"type" : "update_height", "payload": [k, aux[i]]})
+    
 
 
+
+    if (isFinal) {
+      animations.push({"type" : "final", "payload": [i]})
+      animations.push({"type" : "final", "payload": [k]})
+    }
+
+    
     array[k++] = aux[i++];
+
+
+   
+  
+
   }
   while (j <= r) {
     animations.push([j, j]);
@@ -74,10 +125,23 @@ function Merge(array, aux, l, middle, r, animations) {
     animations.push([k, aux[j]]);
 
     animations.push({"type" : "update_height", "payload": [k, aux[j]]})
+   
+
+
+    if (isFinal) {
+      animations.push({"type" : "final", "payload": [j]})
+      animations.push({"type" : "final", "payload": [k]})
+    }
+
 
 
     array[k++] = aux[j++];
+    
   }
+
+
+  
+
 
   //   console.log(`array now ${array}`)
 }
@@ -105,14 +169,14 @@ function testMergeSort() {
   console.log(`trues: ${trues}, falses : ${falses}`);
 }
 
-console.log(
-  `${arraysEqual(
-    [5, 4, 3, 2, 1, 0].sort(function (a, b) {
-      return a - b;
-    }),
-    MergeSort([5, 4, 3, 2, 1, 0], true)
-  )}`
-);
+// console.log(
+//   `${arraysEqual(
+//     [5, 4, 3, 2, 1, 0].sort(function (a, b) {
+//       return a - b;
+//     }),
+//     MergeSort([5, 4, 3, 2, 1, 0], true)
+//   )}`
+// );
 
 // Copied from w3 schools: https://www.w3schools.com/jsref/jsref_random.asp
 function getRandomNumberBetween(lower, upper) {
