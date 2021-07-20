@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import styles from "../styling";
 
 import BubbleSort from "../algorithms/BubbleSort";
-
+import QuickSort from "../algorithms/QuickSort";
 import MergeSort from "../algorithms/MergeSort";
 
 const Visualizer = () => {
   const [array, setArray] = useState([]);
-  const DELAY = 1;
+  const DELAY = 10;
   const BARS = 100;
-  const WIDTH = BARS < 20 ? 44 : 2;
+  const WIDTH = BARS < 30 ? 44 : 2;
 
 
 
@@ -108,11 +108,11 @@ const Visualizer = () => {
     }, (animations.length + 1) * DELAY);
   };
 
-  const visualizeBubbleSort = (sort_type) => {
+  const visualizeBubbleSort = () => {
     document.getElementById("generateArray").disabled = true;
     let animations = BubbleSort(array);
 
-    document.getElementById("generateArray").disabled = true;
+    
     let bars = document.getElementsByClassName("array-value");
     for (var i = 0; i < animations.length; i++) {
       let animation = animations[i];
@@ -163,6 +163,55 @@ const Visualizer = () => {
     }
   };
 
+
+  const visualizeQuickSort = () => {
+    document.getElementById("generateArray").disabled = true;
+    let animations = QuickSort(array);
+    let bars = document.getElementsByClassName("array-value");
+    let previous_pivot = undefined;
+
+    for (var i = 0; i < animations.length; i++) {
+      let animation = animations[i];
+      
+      if (animation['type'] != undefined) {
+        const [args1, args2] = animation['payload'];
+
+        setTimeout( () => {
+          switch (animation['type']) {
+
+            case "pivot":
+
+              if (previous_pivot != undefined) {
+                bars[previous_pivot].style.backgroundColor = styles['DEFAULT_COLOR']
+              }
+              bars[args1].style.backgroundColor = styles['PIVOT']
+              previous_pivot = args1;
+              break;
+            case "swap":
+              let temp = bars[args1].style.height;
+              bars[args1].style.height = bars[args2].style.height;
+              bars[args2].style.height = temp;
+
+              break;
+            case "current":
+              bars[args1].style.backgroundColor = styles['CURRENT'];
+              break;
+            
+            default:
+              let color =styles["DEFAULT_COLOR"];
+              bars[args1].style.backgroundColor = color;
+             
+          }
+        }, i * DELAY)
+
+        setTimeout(() => {
+          document.getElementById("generateArray").disabled = false;
+        }, (animations.length + 1) * DELAY);
+      }
+    }
+
+  }
+
   //This ensures an array is generated on page load;
   useEffect(generateArray, []);
 
@@ -174,6 +223,7 @@ const Visualizer = () => {
         </button>
         <button onClick={visualizeBubbleSort}>Bubble Sort</button>
         <button onClick={visualizeMergeSort}>Merge Sort</button>
+        <button onClick={visualizeQuickSort}>Quick Sort</button>
       </div>
       <div className="array-container">
         {array.map((val, indx) => (

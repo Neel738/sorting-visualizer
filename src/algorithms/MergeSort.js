@@ -1,4 +1,3 @@
-import { getDefaultNormalizer } from "@testing-library/dom";
 
 function MergeSort(array, want_array = false) {
   if (array.length <= 1) return array;
@@ -25,6 +24,7 @@ function MergeSortUtil(array, aux, l, r, animations, counter) {
   MergeSortUtil(aux, array, middle + 1, r, animations);
   let isFinal = false;
   if (l ===0 && r === array.length-1) {isFinal = true; }
+
   Merge(array, aux, l, middle, r, animations, isFinal);
 
   
@@ -195,7 +195,7 @@ function arraysEqual(a, b) {
   // Please note that calling sort on an array will modify that array.
   // you might want to clone your array first.
 
-  for (var i = 0; i < a.length; ++i) {
+  for (var i = 0; i < a.length; i++) {
     if (a[i] !== b[i]) return false;
   }
   return true;
